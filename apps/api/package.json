@@ -1,0 +1,26 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "drizzle-orm": "latest",
+    "pg": "latest",
+    "dotenv": "latest",
+    "bcrypt": "latest",
+    "jsonwebtoken": "latest"
+  },
+  "devDependencies": {
+    "drizzle-kit": "latest",
+    "@types/pg": "latest"
+  }
+}
