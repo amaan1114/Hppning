@@ -17,7 +17,11 @@
     "pg": "latest",
     "dotenv": "latest",
     "bcrypt": "latest",
-    "jsonwebtoken": "latest"
+    "jsonwebtoken": "latest",
+    "nodemailer": "latest",
+    "helmet": "latest",
+    "cors": "latest",
+    "cookie-parser": "latest"
   },
   "devDependencies": {
     "drizzle-kit": "latest",
