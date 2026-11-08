@@ -1,20 +1,19 @@
-export function httpResponse(res, req, status, message, data) {
+export const httpResponse = (success, res, req, statusCode, message, data) => {
   const response = {
-    success: true,
-    status,
+    success,
     message,
-    data,
-    audit: {
-      requestedBy: req.ip || "Unknown",
-      timestamp: new Date().toISOString(),
-      requestedUrl: req.originalUrl,
+    trace: {
+      method: req.method,
+      reqUrl: req.url,
     },
+    statusCode,
+    data,
   };
 
-  return res.status(status).json({
-    success: response.success,
-    status: response.status,
-    message: response.message,
-    data: response.data,
+  console.log("HttpResponse :", response);
+
+  res.status(statusCode).json({
+    message,
+    data,
   });
-}
+};

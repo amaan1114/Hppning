@@ -1,56 +1,59 @@
+import httpError from "../../utils/httpError.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyToken,
+} from "../../utils/jwtToken.js";
+import {
+  getUserByEmail,
+  createUser,
+  setUserVerified,
+} from "./auth.repo.js";
+import { sendEmail } from "../../utils/sendEmail.js";
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
-if (!JWT_SECRET) {
-  throw new Error("JWT_SECRET is not defined");
-}
-
-export async function register(email, password) {
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  // TODO: Save user using your configured database/ORM.
-  const user = {
-    id: "generated-user-id",
-    email,
-    password: hashedPassword,
-  };
-
-  return {
-    id: user.id,
-    email: user.email,
-  };
-}
-
-export async function login(email, password) {
-  // TODO: Fetch user using your configured database/ORM.
-
-  const user = {
-    id: "generated-user-id",
-    email,
-    password: await bcrypt.hash(password, 10),
-  };
-
-  const passwordValid = await bcrypt.compare(
-    password,
-    user.password,
-  );
-
-  if (!passwordValid) {
-    throw new Error("Invalid credentials");
+export const signInService = async (email, password) => {
+  const user = await getUserByEmail(email);
+  if (!user) {
+    throw new httpError(404, "User not found");
   }
+  if (!bcrypt.compareSync(password, user.password)) {
+    throw new httpError(401, "Invalid password");
+  }
+  if (user.isVerified === false) {
+    const verificationToken = generateAccessToken({ email: user.email });
+    await sendEmail(user.email, verificationToken);
+    throw new httpError(
+      403,
+      "User not verified a verification email has been sent to your email address",
+    );
+  }
+  const accessToken = generateAccessToken({ id: user.id, email: user.email });
+  const refreshToken = generateRefreshToken({ id: user.id });
+  return { accessToken, refreshToken };
+};
 
-  const token = jwt.sign(
-    {
-      sub: user.id,
-      email: user.email,
-    },
-    JWT_SECRET,
-    {
-      expiresIn: "7d",
-    },
-  );
+export const signUpService = async (name, email, password) => {
+  const user = await getUserByEmail(email);
+  if (user) {
+    throw new httpError(409, "User already exists");
+  }
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const newUser = await createUser(name, email, hashedPassword);
+  const verificationToken = generateAccessToken({ email: newUser.email });
+  await sendEmail(newUser.email, verificationToken);
+  return { verificationToken };
+};
 
-  return { token };
-}
+export const getMeService = (user) => ({
+  id: user.id,
+  email: user.email,
+});
+
+export const verifyEmailService = async (token) => {
+  const decoded = verifyToken(token);
+  if (typeof decoded === "string" || typeof decoded.email !== "string") {
+    throw new httpError(400, "Invalid token");
+  }
+  await setUserVerified(decoded.email);
+};
