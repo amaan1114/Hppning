@@ -35,7 +35,7 @@ export const sendEmail = async (email, verificationToken) => {
     await getTransporter().sendMail({
         from: config.SMTP_FROM_EMAIL,
         to: email,
-        subject: "Verify your Arbiter account",
+        subject: "Verify your Hppning account",
         text: `Verify your email address by visiting: ${verificationUrl.toString()}`,
         html: `
             <p>Verify your email address by clicking the link below:</p>

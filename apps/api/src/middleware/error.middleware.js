@@ -3,7 +3,7 @@ import { errorMessages } from "../constants/messages.js";
 
 export default function globalHandler(err, req, res, _next) {
   if (err instanceof HttpError) {
-    return res.status(err.status).json({
+    return res.status(err.statusCode).json({
       success: false,
       message: err.message,
       data: err.data,
