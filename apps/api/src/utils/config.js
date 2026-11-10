@@ -4,6 +4,7 @@ dotenv.config();
 export const config = {
     PORT:process.env.PORT,
     NODE_ENV:process.env.NODE_ENV,
+    databaseUrl: process.env.DATABASE_URL,
     CLIENT_URL: process.env.CLIENT_URL || "http://localhost:3000",
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_PORT: process.env.SMTP_PORT || "587",

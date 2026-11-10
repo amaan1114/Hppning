@@ -7,12 +7,23 @@ import {
 } from "../../utils/jwtToken.js";
 import {
   getUserByEmail,
+  getUserById,
   createUser,
   setUserVerified,
 } from "./auth.repo.js";
 import { sendEmail } from "../../utils/sendEmail.js";
 
+const validateCredentials = (email, password) => {
+  if (!email || !password) {
+    throw new httpError(400, "Email and password are required");
+  }
+  if (typeof email !== "string" || typeof password !== "string") {
+    throw new httpError(400, "Email and password must be strings");
+  }
+};
+
 export const signInService = async (email, password) => {
+  validateCredentials(email, password);
   const user = await getUserByEmail(email);
   if (!user) {
     throw new httpError(404, "User not found");
@@ -34,26 +45,69 @@ export const signInService = async (email, password) => {
 };
 
 export const signUpService = async (name, email, password) => {
+  if (!name || !email || !password) {
+    throw new httpError(400, "Name, email, and password are required");
+  }
+  if (
+    typeof name !== "string" ||
+    typeof email !== "string" ||
+    typeof password !== "string"
+  ) {
+    throw new httpError(400, "Name, email, and password must be strings");
+  }
+
   const user = await getUserByEmail(email);
   if (user) {
     throw new httpError(409, "User already exists");
   }
   const hashedPassword = bcrypt.hashSync(password, 10);
   const newUser = await createUser(name, email, hashedPassword);
+  if (!newUser) {
+    throw new httpError(500, "Unable to create user");
+  }
   const verificationToken = generateAccessToken({ email: newUser.email });
   await sendEmail(newUser.email, verificationToken);
   return { verificationToken };
 };
 
-export const getMeService = (user) => ({
-  id: user.id,
-  email: user.email,
-});
+export const getMeService = (user) => {
+  if (!user?.id || !user?.email) {
+    throw new httpError(401, "Invalid authenticated user");
+  }
+
+  return {
+    id: user.id,
+    email: user.email,
+  };
+};
+
+export const refreshAccessTokenService = async (refreshToken) => {
+  if (!refreshToken || typeof refreshToken !== "string") {
+    throw new httpError(401, "Refresh token is required");
+  }
+  const decoded = verifyToken(refreshToken);
+  if (typeof decoded === "string" || !Number.isInteger(decoded.id)) {
+    throw new httpError(401, "Invalid refresh token");
+  }
+
+  const user = await getUserById(decoded.id);
+  if (!user) {
+    throw new httpError(401, "User not found");
+  }
+
+  return generateAccessToken({ id: user.id, email: user.email });
+};
 
 export const verifyEmailService = async (token) => {
+  if (!token || typeof token !== "string") {
+    throw new httpError(400, "Verification token is required");
+  }
   const decoded = verifyToken(token);
   if (typeof decoded === "string" || typeof decoded.email !== "string") {
     throw new httpError(400, "Invalid token");
   }
-  await setUserVerified(decoded.email);
+  const user = await setUserVerified(decoded.email);
+  if (!user) {
+    throw new httpError(404, "User not found");
+  }
 };

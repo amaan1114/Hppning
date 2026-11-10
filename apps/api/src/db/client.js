@@ -1,4 +1,4 @@
-import config from "../config/config.js";
+import {config} from "../utils/config.js";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
