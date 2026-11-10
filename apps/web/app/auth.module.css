@@ -1,0 +1,90 @@
+.page {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 42px;
+  width: min(100%, 430px);
+}
+
+.logo {
+  color: var(--green);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.card h1 {
+  font-size: 34px;
+  letter-spacing: -1px;
+  margin: 42px 0 8px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+
+.form {
+  display: grid;
+  gap: 17px;
+}
+
+.form label {
+  display: grid;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 8px;
+}
+
+.form input {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  font: inherit;
+  padding: 13px;
+}
+
+.form button {
+  background: var(--green);
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  margin-top: 8px;
+  padding: 14px;
+}
+
+.message {
+  color: var(--green);
+  font-size: 14px;
+  margin-top: 18px;
+}
+
+.footer {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 26px;
+  text-align: center;
+}
+
+.footer a {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.actionLink {
+  background: var(--green);
+  border-radius: 5px;
+  color: white;
+  display: block;
+  font-weight: 700;
+  padding: 14px;
+  text-align: center;
+}

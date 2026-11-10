@@ -4,6 +4,7 @@ import {
   signInService,
   getMeService,
   verifyEmailService,
+  refreshAccessTokenService,
 } from "./auth.service.js";
 import { cookieConfig } from "../../utils/config.js";
 
@@ -30,6 +31,12 @@ export const signInController = async (req, res, next) => {
   }
 };
 
+export const signOutController = (req, res) => {
+  res.clearCookie("accessToken", cookieConfig);
+  res.clearCookie("refreshToken", cookieConfig);
+  return httpResponse(true, res, req, 200, "User Signed Out Successfully");
+};
+
 export const getMeController = async (req, res, next) => {
   try {
     const user = await getMeService(req.user);
@@ -51,6 +58,18 @@ export const verifyEmailController = async (req, res, next) => {
     const { token } = req.body;
     await verifyEmailService(token);
     return httpResponse(true, res, req, 200, "Email Verified Successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const refreshTokenController = async (req, res, next) => {
+  try {
+    const accessToken = await refreshAccessTokenService(
+      req.cookies.refreshToken,
+    );
+    res.cookie("accessToken", accessToken, cookieConfig);
+    return httpResponse(true, res, req, 200, "Access Token Refreshed");
   } catch (error) {
     next(error);
   }

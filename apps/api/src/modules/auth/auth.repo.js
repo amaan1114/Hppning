@@ -11,6 +11,16 @@ export const getUserByEmail = async (email) => {
   return user;
 };
 
+export const getUserById = async (id) => {
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, id))
+    .limit(1);
+
+  return user;
+};
+
 export const createUser = async (name, email, hashedPassword) => {
   const [user] = await db
     .insert(users)

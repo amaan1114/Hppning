@@ -6,12 +6,13 @@ import globalHandler from "./middleware/error.middleware.js";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { corsOptions } from "./utils/config.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(helmet());
 
 app.get("/health", (req, res) => {

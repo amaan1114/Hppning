@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { config } from "./config.js";
+import HttpError from "./httpError.js";
 
 
 
@@ -24,6 +25,6 @@ export const verifyToken = (token)=>{
         return decoded
     }
     catch(error){
-        throw new Error('Invalid token')
+        throw new HttpError(401, "Invalid token");
     }
 }
