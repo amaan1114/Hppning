@@ -90,6 +90,10 @@
   --ease: ease;
   --ease-inout: ease-in-out;
 
+  /* entrances: longer, with a soft landing */
+  --motion-enter: 0.7s;
+  --ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
+
   /* ── layout ─────────────────────────────────────────────── */
   --container: 1280px;
   --container-wide: 1600px;

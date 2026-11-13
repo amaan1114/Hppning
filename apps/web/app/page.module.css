@@ -366,3 +366,79 @@
     align-self: stretch;
   }
 }
+
+/* ── motion layer ─────────────────────────────────────────── */
+
+/* the bar stays with the reader, frosted over the page */
+.nav {
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  background: color-mix(in srgb, var(--background) 72%, transparent);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* the first screen arrives in order: headline, line, action, then the tiles */
+.hero h1,
+.heroText,
+.hero .primaryButton,
+.kindList li {
+  animation: rise var(--motion-enter) var(--ease-emphasis) backwards;
+}
+
+.heroText {
+  animation-delay: 80ms;
+}
+
+.hero .primaryButton {
+  animation-delay: 160ms;
+}
+
+.kindList li:nth-child(1) {
+  animation-delay: 120ms;
+}
+
+.kindList li:nth-child(2) {
+  animation-delay: 190ms;
+}
+
+.kindList li:nth-child(3) {
+  animation-delay: 260ms;
+}
+
+.kindList li:nth-child(4) {
+  animation-delay: 330ms;
+}
+
+/* buttons answer the hand */
+@media (hover: hover) {
+  .primaryButton:hover,
+  .bandButton:hover {
+    transform: scale(1.03);
+  }
+}
+
+.primaryButton:active,
+.bandButton:active {
+  transform: scale(0.98);
+}
+
+/* lower sections rise as they scroll into view; without support they simply show */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .sides,
+    .band {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}

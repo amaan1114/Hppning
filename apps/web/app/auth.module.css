@@ -261,3 +261,16 @@
     margin-top: var(--space-lg);
   }
 }
+
+/* ── motion layer ─────────────────────────────────────────── */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+.card {
+  animation: rise var(--motion-enter) var(--ease-emphasis) backwards;
+}

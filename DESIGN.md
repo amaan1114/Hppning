@@ -166,9 +166,18 @@ sheets and tiles, 100px on pills and buttons.
 
 ## Motion
 
-0.2s and 0.3s, `ease` and `ease-in-out`. Never `transition: all`; never animate
-`width`, `height`, `top` or `left`. Every animation has a
-`prefers-reduced-motion: reduce` fallback.
+State changes (hover, press, focus) run 0.2s and 0.3s on `ease` and
+`ease-in-out`. Entrances run 0.7s on `cubic-bezier(0.16, 1, 0.3, 1)`: content
+rises 24px and fades in, staggered 60 to 80ms apart, once on load. Lower
+sections on the landing page rise as they scroll into view through a CSS view
+timeline; where that is unsupported they simply show.
+
+The top bar is sticky and frosted: 72% of the ground colour over a 20px
+backdrop blur.
+
+Never `transition: all`; never animate `width`, `height`, `top` or `left`. Only
+`opacity` and `transform` move. Every animation has a
+`prefers-reduced-motion: reduce` fallback, and nothing depends on scripting.
 
 ## Do's and Don'ts
 
@@ -181,4 +190,4 @@ sheets and tiles, 100px on pills and buttons.
 - Don't add drop shadows; use hairline rings and tonal surfaces.
 - Don't introduce a font beyond Instrument Sans.
 - Don't set an eyebrow above a heading, or a label in tracked capitals.
-- Don't let a transition run longer than 0.3s.
+- Don't let a state transition run longer than 0.3s; only entrances take 0.7s.

@@ -652,3 +652,59 @@
     font-size: var(--text-headline);
   }
 }
+
+/* ── motion layer ─────────────────────────────────────────── */
+
+/* the bar stays with the reader, frosted over the page */
+.nav {
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  background: color-mix(in srgb, var(--background) 72%, transparent);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* the listing deals its cards in, one after another */
+.grid > .card {
+  animation: rise var(--motion-enter) var(--ease-emphasis) backwards;
+}
+
+.grid > .card:nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.grid > .card:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.grid > .card:nth-child(4) {
+  animation-delay: 180ms;
+}
+
+.grid > .card:nth-child(5) {
+  animation-delay: 240ms;
+}
+
+.grid > .card:nth-child(n + 6) {
+  animation-delay: 300ms;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* the heading and the detail sheet arrive the same way */
+.header,
+.detail {
+  animation: rise var(--motion-enter) var(--ease-emphasis) backwards;
+}
