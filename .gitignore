@@ -36,3 +36,16 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Local agent config
+.claude/settings.local.json
+REDESIGN-PROMPT.md
+
+# Installed agent skills (43MB of assets - do not commit)
+.claude/skills/
+.agents/
+.taste-skill/
+
+# Hallmark run records and screenshots
+.hallmark/
+NEXT-PROMPT.md

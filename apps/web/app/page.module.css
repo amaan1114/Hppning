@@ -1,121 +1,368 @@
+/* Hallmark · shape: Settled landing · genre: playful · theme: locked (DESIGN.md, repalette) · redesign: full
+ * paper: oklch(1 0 0) · accent: #1f6b3a (taste-skill mint-pink-accounts) · display: Instrument Sans · body: Instrument Sans
+ * nav: top bar, wordmark and two actions · footer: one line, wordmark, links and the photo credit · hero: Stage, text on 5 columns, the four kinds of event on 7
+ * signature: the four kinds of event set at display size on the tonal steps · axes: light/grotesk-sans/cool · contrast: pass · surface: absolute · v2.0.0 */
+/* Hallmark · pre-emit critique: P3 H4 E4 S3 R5 V3 · weakest: S, the locked 34px display keeps the headline quiet; the tonal mosaic and the deep-blue closing band carry the weight instead */
+/* Hallmark · dropped "What's happening" · 54 names the eyebrow; "Upcoming events" stands. "Find your next moment" moved from eyebrow to the heading of the second section. No photograph: the slot waits for one of the product's own */
+
 .page {
-  margin: 0 auto;
-  max-width: 1180px;
-  padding: 28px 32px 80px;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
+/* ── top bar ──────────────────────────────────────────────── */
+
 .nav {
+  box-shadow: inset 0 -1px 0 var(--outline);
+}
+
+.navInner {
   align-items: center;
   display: flex;
+  gap: var(--space-md);
+  height: 64px;
   justify-content: space-between;
+  margin: 0 auto;
+  max-width: var(--container-wide);
+  padding: 0 var(--space-xl);
 }
 
 .logo {
-  color: var(--green);
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -1px;
+  border-radius: var(--radius-xs);
+  color: var(--tertiary);
+  font-size: var(--text-headline);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
 }
 
 .navLinks {
   align-items: center;
   display: flex;
-  gap: 24px;
+  gap: var(--space-sm);
+}
+
+.navLink,
+.navButton,
+.primaryButton,
+.bandButton {
+  align-items: center;
+  border-radius: var(--radius-xl);
+  display: inline-flex;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  height: 40px;
+  justify-content: center;
+  padding: 0 var(--space-md);
+  transition: background-color var(--motion-fast) var(--ease),
+    color var(--motion-fast) var(--ease),
+    transform var(--motion-fast) var(--ease);
+  white-space: nowrap;
+}
+
+.navLink {
+  color: var(--on-surface);
 }
 
 .navButton,
 .primaryButton {
-  background: var(--green);
-  border-radius: 6px;
-  color: white;
-  padding: 12px 18px;
+  background: var(--primary);
+  color: var(--on-primary);
 }
+
+.primaryButton {
+  height: 48px;
+  padding: 0 var(--space-xl);
+}
+
+.bandButton {
+  background: var(--surface);
+  color: var(--tertiary);
+  height: 48px;
+  padding: 0 var(--space-xl);
+}
+
+@media (hover: hover) {
+  .navLink:hover {
+    background: var(--surface-container-low);
+  }
+
+  .navButton:hover,
+  .primaryButton:hover {
+    background: var(--secondary);
+  }
+
+  .bandButton:hover {
+    background: var(--surface-container-high);
+  }
+}
+
+.navLink:active,
+.navButton:active,
+.primaryButton:active,
+.bandButton:active {
+  transform: translateY(1px);
+}
+
+.navLink:active {
+  background: var(--surface-container-high);
+}
+
+.navButton:active,
+.primaryButton:active {
+  background: var(--tertiary);
+}
+
+/* the dark band needs a ring that shows on deep blue */
+.bandButton:focus-visible {
+  outline-color: var(--on-primary);
+}
+
+/* ── shared measure ───────────────────────────────────────── */
+
+.hero,
+.sides,
+.events,
+.footer {
+  margin: 0 auto;
+  max-width: var(--container);
+  padding-inline: var(--space-xl);
+}
+
+/* ── hero ─────────────────────────────────────────────────── */
 
 .hero {
-  max-width: 680px;
-  padding: 150px 0 170px;
-}
-
-.eyebrow {
-  color: var(--green);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  align-items: center;
+  display: grid;
+  gap: var(--space-2xl);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  padding-block: var(--space-2xl);
 }
 
 .hero h1 {
-  font-size: clamp(48px, 8vw, 88px);
-  letter-spacing: -5px;
-  line-height: .95;
-  margin: 18px 0 24px;
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
 }
 
 .heroText {
-  color: var(--muted);
-  font-size: 19px;
-  line-height: 1.6;
-  margin-bottom: 32px;
-  max-width: 470px;
+  color: var(--on-surface-variant);
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-relaxed);
+  margin: var(--space-md) 0 var(--space-xl);
+  max-width: 34ch;
 }
+
+/* ── the four kinds of event: the hero's right half ─────── */
+
+.kindList {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+}
+
+.kindList li {
+  align-items: end;
+  background: var(--primary);
+  border-radius: var(--radius-lg);
+  color: var(--on-primary);
+  display: flex;
+  font-size: var(--text-headline);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  min-height: 116px;
+  min-width: 0;
+  overflow-wrap: break-word;
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.kindList li:nth-child(2) {
+  background: var(--surface-container-high);
+  color: var(--tertiary);
+}
+
+.kindList li:nth-child(3) {
+  background: var(--surface-container);
+  color: var(--tertiary);
+}
+
+.kindList li:nth-child(4) {
+  background: var(--tertiary);
+  color: var(--on-primary);
+}
+
+/* ── who it is for ────────────────────────────────────────── */
+
+.sides {
+  padding-block: var(--space-lg) var(--space-2xl);
+}
+
+.sides h2,
+.events h2 {
+  font-size: var(--text-headline);
+  line-height: var(--leading-normal);
+}
+
+.sidesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: var(--space-md);
+}
+
+.sidesGrid > div {
+  border-top: 1px solid var(--outline);
+  padding: var(--space-lg) var(--space-xl) 0 0;
+}
+
+.sides h3 {
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-normal);
+}
+
+.sides p {
+  color: var(--on-surface-variant);
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-normal);
+  margin-top: var(--space-xs);
+}
+
+/* ── upcoming events: the way in ──────────────────────────── */
 
 .events {
-  border-top: 1px solid var(--line);
-  padding-top: 48px;
+  padding-block: 0 var(--space-3xl);
 }
 
-.sectionHeading h2 {
-  font-size: 38px;
-  letter-spacing: -1.5px;
-  margin-top: 10px;
+.band {
+  align-items: center;
+  background: var(--tertiary);
+  border-radius: var(--radius-lg);
+  color: var(--on-primary);
+  display: flex;
+  gap: var(--space-lg);
+  justify-content: space-between;
+  padding: var(--space-2xl);
 }
 
-.eventGrid {
-  display: grid;
-  gap: 18px;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 32px;
-}
-
-.eventCard {
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 24px;
-}
-
-.eventCard h3 {
-  font-size: 23px;
-  margin: 18px 0 10px;
-}
-
-.eventCard p {
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.eventCard span {
-  display: block;
-  font-size: 14px;
-  margin-top: 20px;
-}
-
-.eventDate {
-  color: var(--green) !important;
-  font-size: 13px;
-  font-weight: 700;
+.band h2 {
+  color: var(--on-primary);
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
 }
 
 .emptyState {
-  color: var(--muted);
-  margin-top: 32px;
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-normal);
+  margin-top: var(--space-sm);
 }
 
-@media (max-width: 700px) {
-  .page { padding: 24px 20px 60px; }
-  .navLinks { gap: 12px; }
-  .navButton { padding: 10px 12px; }
-  .hero { padding: 110px 0 120px; }
-  .hero h1 { letter-spacing: -3px; }
-  .eventGrid { grid-template-columns: 1fr; }
+/* ── footer ───────────────────────────────────────────────── */
+
+.footer {
+  align-items: center;
+  border-top: 1px solid var(--outline);
+  color: var(--on-surface-variant);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--text-label-sm);
+  gap: var(--space-sm) var(--space-lg);
+  justify-content: space-between;
+  padding-block: var(--space-lg);
+}
+
+
+/* ── widths ───────────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .hero {
+    gap: var(--space-xl);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kindList li {
+    border-radius: var(--radius-md);
+    font-size: var(--text-headline);
+    min-height: 104px;
+    padding: var(--space-lg);
+  }
+}
+
+@media (max-width: 767px) {
+  .navInner,
+  .hero,
+  .sides,
+  .events,
+  .footer {
+    padding-inline: var(--space-md);
+  }
+
+  .navInner {
+    height: 56px;
+  }
+
+  .navLinks {
+    gap: 0;
+  }
+
+  .hero {
+    gap: var(--space-lg);
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: var(--space-xl);
+  }
+
+  .hero h1,
+  .band h2 {
+    font-size: var(--text-display-mobile);
+  }
+
+  .heroText,
+  .sides p,
+  .emptyState {
+    font-size: var(--text-body);
+  }
+
+  .heroText {
+    margin-bottom: var(--space-lg);
+  }
+
+  .kindList {
+    gap: var(--space-sm);
+  }
+
+  .kindList li {
+    font-size: var(--text-headline-mobile);
+    min-height: 96px;
+    padding: var(--space-md);
+  }
+
+  .sides h2,
+  .sides h3 {
+    font-size: var(--text-headline-mobile);
+  }
+
+  .sides {
+    padding-bottom: var(--space-xl);
+  }
+
+  .sidesGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidesGrid > div {
+    padding: var(--space-md) 0;
+  }
+
+  .events {
+    padding-bottom: var(--space-2xl);
+  }
+
+  .band {
+    align-items: flex-start;
+    border-radius: var(--radius-md);
+    flex-direction: column;
+    padding: var(--space-lg);
+  }
+
+  .bandButton {
+    align-self: stretch;
+  }
 }

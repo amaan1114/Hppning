@@ -1,90 +1,263 @@
+/* Hallmark · shape: app screen · genre: playful · theme: locked (DESIGN.md, repalette) · redesign: full
+ * paper: oklch(1 0 0) · accent: #1f6b3a (taste-skill mint-pink-accounts) · display: Instrument Sans · body: Instrument Sans
+ * nav: kept (wordmark in the card) · signature: one sheet on the tinted page · states: default, invalid, autofill, verifying, success, error
+ * axes: light/grotesk-sans/cool · posture: app · contrast: pass · surface: absolute · v2.0.0 */
+/* Hallmark · pre-emit critique: P3 H4 E4 S3 R5 V3 · weakest: S, a sign-in card is a sign-in card; the status mark on verify-email is the one thing made for this product */
+/* Hallmark · waive 7b · DESIGN.md colors.background and on-primary are #FFFFFF · the locked system sets a pure white page and white on primary */
+
 .page {
   align-items: center;
+  background: var(--surface-container-low);
   display: flex;
   justify-content: center;
   min-height: 100vh;
-  padding: 24px;
+  min-height: 100dvh;
+  padding: var(--space-lg);
 }
 
 .card {
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 42px;
-  width: min(100%, 430px);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--ring);
+  padding: var(--space-xl);
+  width: min(100%, 420px);
 }
 
 .logo {
-  color: var(--green);
-  font-size: 24px;
-  font-weight: 800;
+  border-radius: var(--radius-xs);
+  color: var(--tertiary);
+  display: inline-block;
+  font-size: var(--text-headline);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
 }
 
 .card h1 {
-  font-size: 34px;
-  letter-spacing: -1px;
-  margin: 42px 0 8px;
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+  margin: var(--space-xl) 0 var(--space-sm);
+  text-wrap: balance;
 }
 
 .subtitle {
-  color: var(--muted);
-  margin-bottom: 30px;
+  color: var(--on-surface-variant);
+  margin-bottom: var(--space-lg);
 }
 
 .form {
   display: grid;
-  gap: 17px;
+  gap: var(--space-md);
 }
 
 .form label {
+  color: var(--on-surface-strong);
   display: grid;
-  font-size: 14px;
-  font-weight: 700;
-  gap: 8px;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  gap: var(--space-sm);
+  line-height: var(--leading-snug);
 }
 
 .form input {
-  border: 1px solid var(--line);
-  border-radius: 5px;
+  background: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-sm);
+  color: var(--on-surface);
   font: inherit;
-  padding: 13px;
+  font-weight: var(--weight-regular);
+  height: 44px;
+  outline: 2px solid transparent;
+  outline-offset: -3px;
+  padding: 0 var(--space-md);
+  transition: background-color var(--motion-fast) var(--ease),
+    border-color var(--motion-fast) var(--ease);
 }
 
-.form button {
-  background: var(--green);
+@media (hover: hover) {
+  .form input:hover {
+    background: var(--surface-container-low);
+  }
+}
+
+.form input:focus-visible {
+  border-color: var(--primary);
+  outline-color: var(--primary);
+}
+
+.form input:user-invalid {
+  border-color: var(--danger);
+}
+
+.form input:user-invalid:focus-visible {
+  outline-color: var(--danger);
+}
+
+/* autofill: the browser's yellow becomes the system's first tonal step */
+.form input:-webkit-autofill,
+.form input:autofill {
+  -webkit-text-fill-color: var(--on-surface);
+  box-shadow: inset 0 0 0 100px var(--surface-container-low);
+  caret-color: var(--on-surface);
+}
+
+.form button,
+.actionLink {
+  align-items: center;
+  background: var(--primary);
   border: 0;
-  border-radius: 5px;
-  color: white;
+  border-radius: var(--radius-xl);
+  color: var(--on-primary);
   cursor: pointer;
+  display: flex;
   font: inherit;
-  margin-top: 8px;
-  padding: 14px;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  height: 44px;
+  justify-content: center;
+  margin-top: var(--space-sm);
+  padding: 0 var(--space-lg);
+  transition: background-color var(--motion-fast) var(--ease),
+    transform var(--motion-fast) var(--ease);
 }
 
-.message {
-  color: var(--green);
-  font-size: 14px;
-  margin-top: 18px;
+@media (hover: hover) {
+  .form button:hover,
+  .actionLink:hover {
+    background: var(--secondary);
+  }
+}
+
+.form button:active,
+.actionLink:active {
+  background: var(--tertiary);
+  transform: translateY(1px);
+}
+
+.form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+/* the answer to a submit: a tonal note, or the error tint when it can only be a failure */
+.message,
+.messageError {
+  background: var(--surface-container-low);
+  border-radius: var(--radius-xs);
+  color: var(--on-surface-strong);
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+}
+
+.messageError {
+  background: color-mix(in srgb, var(--danger) 8%, var(--surface));
+  color: var(--danger);
 }
 
 .footer {
-  color: var(--muted);
-  font-size: 14px;
-  margin-top: 26px;
+  color: var(--on-surface-variant);
+  margin-top: var(--space-lg);
   text-align: center;
 }
 
 .footer a {
-  color: var(--green);
-  font-weight: 700;
+  border-radius: var(--radius-xs);
+  color: var(--primary);
+  font-weight: var(--weight-medium);
+  text-underline-offset: 3px;
 }
 
-.actionLink {
-  background: var(--green);
-  border-radius: 5px;
-  color: white;
-  display: block;
-  font-weight: 700;
-  padding: 14px;
-  text-align: center;
+@media (hover: hover) {
+  .footer a:hover {
+    text-decoration: underline;
+  }
+}
+
+.footer a:active {
+  color: var(--tertiary);
+}
+
+/* ── verify-email: one mark, three states ─────────────────── */
+
+.status {
+  border-radius: var(--radius-full);
+  display: grid;
+  height: 48px;
+  margin-top: var(--space-xl);
+  place-items: center;
+  width: 48px;
+}
+
+.status + h1 {
+  margin-top: var(--space-md);
+}
+
+.status::before {
+  content: "";
+}
+
+.status[data-status="verifying"] {
+  background: var(--surface-container-low);
+}
+
+.status[data-status="verifying"]::before {
+  animation: spin 0.9s linear infinite;
+  border: 2px solid var(--surface-container-high);
+  border-radius: var(--radius-full);
+  border-top-color: var(--primary);
+  height: 20px;
+  width: 20px;
+}
+
+.status[data-status="success"] {
+  background: var(--primary);
+}
+
+.status[data-status="success"]::before {
+  border-bottom: 2px solid var(--on-primary);
+  border-right: 2px solid var(--on-primary);
+  height: 16px;
+  margin-top: calc(-1 * var(--space-xs));
+  transform: rotate(45deg);
+  width: 8px;
+}
+
+.status[data-status="error"] {
+  background: color-mix(in srgb, var(--danger) 8%, var(--surface));
+  box-shadow: inset 0 0 0 1px var(--danger);
+}
+
+.status[data-status="error"]::before {
+  color: var(--danger);
+  content: "!";
+  font-size: var(--text-headline);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status[data-status="verifying"]::before {
+    animation: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: var(--space-lg);
+  }
+
+  .card h1 {
+    font-size: var(--text-display-mobile);
+    margin-top: var(--space-lg);
+  }
+
+  .status {
+    margin-top: var(--space-lg);
+  }
 }
