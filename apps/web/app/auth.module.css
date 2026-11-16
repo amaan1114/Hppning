@@ -1,276 +1,171 @@
-/* Hallmark · shape: app screen · genre: playful · theme: locked (DESIGN.md, repalette) · redesign: full
- * paper: oklch(1 0 0) · accent: #1f6b3a (taste-skill mint-pink-accounts) · display: Instrument Sans · body: Instrument Sans
- * nav: kept (wordmark in the card) · signature: one sheet on the tinted page · states: default, invalid, autofill, verifying, success, error
- * axes: light/grotesk-sans/cool · posture: app · contrast: pass · surface: absolute · v2.0.0 */
-/* Hallmark · pre-emit critique: P3 H4 E4 S3 R5 V3 · weakest: S, a sign-in card is a sign-in card; the status mark on verify-email is the one thing made for this product */
-/* Hallmark · waive 7b · DESIGN.md colors.background and on-primary are #FFFFFF · the locked system sets a pure white page and white on primary */
+/* Shared by /signin, /signup and /verify-email. */
 
 .page {
-  align-items: center;
-  background: var(--surface-container-low);
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
   min-height: 100vh;
-  min-height: 100dvh;
-  padding: var(--space-lg);
+}
+
+/* Poster panel. Purely decorative, so it lives in CSS and the pages stay untouched. */
+.page::before {
+  align-items: flex-end;
+  background:
+    repeating-radial-gradient(
+      circle at 88% 10%,
+      transparent 0 44px,
+      rgba(16, 19, 10, 0.11) 44px 45px
+    ),
+    var(--accent);
+  border-radius: 28px;
+  color: var(--accent-ink);
+  content: "Good things happen when we show up.";
+  display: flex;
+  font-size: clamp(40px, 5.2vw, 76px);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+  margin: 16px;
+  padding: 48px;
 }
 
 .card {
-  background: var(--surface);
-  border-radius: var(--radius-md);
-  box-shadow: var(--ring);
-  padding: var(--space-xl);
-  width: min(100%, 420px);
+  align-self: center;
+  justify-self: center;
+  padding: 40px 24px;
+  width: min(100%, 448px);
 }
 
 .logo {
-  border-radius: var(--radius-xs);
-  color: var(--tertiary);
-  display: inline-block;
-  font-size: var(--text-headline);
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-tight);
+  align-items: baseline;
+  display: inline-flex;
+  font-size: 22px;
+  font-weight: 700;
+  gap: 5px;
+  letter-spacing: -0.04em;
+}
+
+.logo::after {
+  background: var(--accent);
+  border-radius: 50%;
+  content: "";
+  height: 8px;
+  width: 8px;
 }
 
 .card h1 {
-  font-size: var(--text-display);
-  line-height: var(--leading-tight);
-  margin: var(--space-xl) 0 var(--space-sm);
-  text-wrap: balance;
+  font-size: clamp(34px, 4vw, 44px);
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  margin: 56px 0 10px;
 }
 
 .subtitle {
-  color: var(--on-surface-variant);
-  margin-bottom: var(--space-lg);
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.5;
+  margin-bottom: 36px;
 }
 
 .form {
   display: grid;
-  gap: var(--space-md);
+  gap: 18px;
 }
 
 .form label {
-  color: var(--on-surface-strong);
+  color: var(--muted);
   display: grid;
-  font-size: var(--text-label);
-  font-weight: var(--weight-medium);
-  gap: var(--space-sm);
-  line-height: var(--leading-snug);
+  font-family: var(--mono);
+  font-size: 12px;
+  gap: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .form input {
   background: var(--surface);
-  border: 1px solid var(--outline-variant);
-  border-radius: var(--radius-sm);
-  color: var(--on-surface);
-  font: inherit;
-  font-weight: var(--weight-regular);
-  height: 44px;
-  outline: 2px solid transparent;
-  outline-offset: -3px;
-  padding: 0 var(--space-md);
-  transition: background-color var(--motion-fast) var(--ease),
-    border-color var(--motion-fast) var(--ease);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--ink);
+  font: 16px var(--sans);
+  letter-spacing: normal;
+  padding: 15px 16px;
+  text-transform: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
-@media (hover: hover) {
-  .form input:hover {
-    background: var(--surface-container-low);
-  }
+.form input:hover {
+  border-color: #3d3d47;
 }
 
-.form input:focus-visible {
-  border-color: var(--primary);
-  outline-color: var(--primary);
-}
-
-.form input:user-invalid {
-  border-color: var(--danger);
-}
-
-.form input:user-invalid:focus-visible {
-  outline-color: var(--danger);
-}
-
-/* autofill: the browser's yellow becomes the system's first tonal step */
-.form input:-webkit-autofill,
-.form input:autofill {
-  -webkit-text-fill-color: var(--on-surface);
-  box-shadow: inset 0 0 0 100px var(--surface-container-low);
-  caret-color: var(--on-surface);
+.form input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(198, 255, 61, 0.14);
+  outline: none;
 }
 
 .form button,
 .actionLink {
-  align-items: center;
-  background: var(--primary);
+  background: var(--accent);
   border: 0;
-  border-radius: var(--radius-xl);
-  color: var(--on-primary);
+  border-radius: 999px;
+  color: var(--accent-ink);
   cursor: pointer;
-  display: flex;
-  font: inherit;
-  font-size: var(--text-label);
-  font-weight: var(--weight-medium);
-  height: 44px;
-  justify-content: center;
-  margin-top: var(--space-sm);
-  padding: 0 var(--space-lg);
-  transition: background-color var(--motion-fast) var(--ease),
-    transform var(--motion-fast) var(--ease);
+  display: block;
+  font: 600 16px var(--sans);
+  margin-top: 10px;
+  padding: 16px;
+  text-align: center;
+  transition: transform 150ms ease, filter 150ms ease;
 }
 
-@media (hover: hover) {
-  .form button:hover,
-  .actionLink:hover {
-    background: var(--secondary);
-  }
+.form button:hover,
+.actionLink:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
 }
 
-.form button:active,
-.actionLink:active {
-  background: var(--tertiary);
-  transform: translateY(1px);
-}
-
-.form button:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
-  transform: none;
-}
-
-/* the answer to a submit: a tonal note, or the error tint when it can only be a failure */
 .message,
 .messageError {
-  background: var(--surface-container-low);
-  border-radius: var(--radius-xs);
-  color: var(--on-surface-strong);
-  margin-top: var(--space-md);
-  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 20px;
+  padding: 14px 16px;
 }
 
 .messageError {
-  background: color-mix(in srgb, var(--danger) 8%, var(--surface));
+  border-left-color: var(--danger);
   color: var(--danger);
 }
 
 .footer {
-  color: var(--on-surface-variant);
-  margin-top: var(--space-lg);
-  text-align: center;
+  color: var(--muted);
+  font-size: 15px;
+  margin-top: 32px;
 }
 
 .footer a {
-  border-radius: var(--radius-xs);
-  color: var(--primary);
-  font-weight: var(--weight-medium);
-  text-underline-offset: 3px;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
-@media (hover: hover) {
-  .footer a:hover {
-    text-decoration: underline;
+@media (max-width: 860px) {
+  .page {
+    grid-template-columns: 1fr;
   }
-}
 
-.footer a:active {
-  color: var(--tertiary);
-}
-
-/* ── verify-email: one mark, three states ─────────────────── */
-
-.status {
-  border-radius: var(--radius-full);
-  display: grid;
-  height: 48px;
-  margin-top: var(--space-xl);
-  place-items: center;
-  width: 48px;
-}
-
-.status + h1 {
-  margin-top: var(--space-md);
-}
-
-.status::before {
-  content: "";
-}
-
-.status[data-status="verifying"] {
-  background: var(--surface-container-low);
-}
-
-.status[data-status="verifying"]::before {
-  animation: spin 0.9s linear infinite;
-  border: 2px solid var(--surface-container-high);
-  border-radius: var(--radius-full);
-  border-top-color: var(--primary);
-  height: 20px;
-  width: 20px;
-}
-
-.status[data-status="success"] {
-  background: var(--primary);
-}
-
-.status[data-status="success"]::before {
-  border-bottom: 2px solid var(--on-primary);
-  border-right: 2px solid var(--on-primary);
-  height: 16px;
-  margin-top: calc(-1 * var(--space-xs));
-  transform: rotate(45deg);
-  width: 8px;
-}
-
-.status[data-status="error"] {
-  background: color-mix(in srgb, var(--danger) 8%, var(--surface));
-  box-shadow: inset 0 0 0 1px var(--danger);
-}
-
-.status[data-status="error"]::before {
-  color: var(--danger);
-  content: "!";
-  font-size: var(--text-headline);
-  font-weight: var(--weight-semibold);
-  line-height: 1;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .status[data-status="verifying"]::before {
-    animation: none;
-  }
-}
-
-@media (max-width: 767px) {
-  .card {
-    padding: var(--space-lg);
+  .page::before {
+    display: none;
   }
 
   .card h1 {
-    font-size: var(--text-display-mobile);
-    margin-top: var(--space-lg);
+    margin-top: 40px;
   }
-
-  .status {
-    margin-top: var(--space-lg);
-  }
-}
-
-/* ── motion layer ─────────────────────────────────────────── */
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-}
-
-.card {
-  animation: rise var(--motion-enter) var(--ease-emphasis) backwards;
 }

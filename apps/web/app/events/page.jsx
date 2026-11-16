@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getMe, signOut } from "../../lib/api/auth";
 import { createEvent, getEvents } from "../../lib/api/events";
+import { dateParts } from "../../lib/date";
 import styles from "./events.module.css";
 
 const emptyForm = {
@@ -14,14 +15,6 @@ const emptyForm = {
   date: "",
   time: "",
 };
-
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-// display only: "2026-11-21" -> "21 Nov 2026". Split, never new Date(), so no timezone can move the day.
-function formatDate(iso) {
-  const [year, month, day] = String(iso).slice(0, 10).split("-").map(Number);
-  return MONTHS[month - 1] && day && year ? `${day} ${MONTHS[month - 1]} ${year}` : iso;
-}
 
 export default function EventsPage() {
   const router = useRouter();
@@ -102,55 +95,58 @@ export default function EventsPage() {
   return (
     <main className={styles.page}>
       <nav className={styles.nav}>
-        <div className={styles.navInner}>
-          <Link href="/events" className={styles.logo}>happning</Link>
-          <div className={styles.navActions}>
-            <button type="button" className={styles.signOutButton} onClick={handleSignOut} disabled={signingOut}>
-              {signingOut ? "Signing out…" : "Sign out"}
-            </button>
-            <button
-              type="button"
-              className={styles.createButton}
-              onClick={() => setShowForm((current) => !current)}
-              aria-label={showForm ? "Close create event form" : "Create an event"}
-              aria-expanded={showForm}
-            >
-              <span className={styles.createIcon} aria-hidden="true" />
-              <span className={styles.createLabel}>{showForm ? "Close" : "Create an event"}</span>
-            </button>
-          </div>
+        <Link href="/events" className={styles.logo}>happning</Link>
+        <div className={styles.navActions}>
+          <button type="button" className={styles.signOutButton} onClick={handleSignOut} disabled={signingOut}>
+            {signingOut ? "Signing out..." : "Sign out"}
+          </button>
+          <button
+            type="button"
+            className={styles.createButton}
+            onClick={() => setShowForm((current) => !current)}
+            aria-label={showForm ? "Close create event form" : "Create an event"}
+            aria-expanded={showForm}
+          >
+            <span className={styles.createIcon} data-open={showForm} aria-hidden="true">+</span>
+            {showForm ? "Close" : "New event"}
+          </button>
         </div>
       </nav>
 
-      <div className={styles.body}>
-        <header className={styles.header}>
+      <header className={styles.header}>
+        <div>
+          <p className={styles.eyebrow}>Your next moment</p>
           <h1>What&apos;s happening?</h1>
-          <span className={styles.searchWrap}>
-            <input
-              className={styles.search}
-              type="search"
-              placeholder="Search events"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              aria-label="Search events"
-            />
-          </span>
-        </header>
+        </div>
+        <input
+          className={styles.search}
+          type="search"
+          placeholder="Search events"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          aria-label="Search events"
+        />
+      </header>
 
-        {showForm && (
-          <form className={styles.form} onSubmit={handleSubmit}>
+      {showForm && (
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.formIntro}>
+            <p className={styles.eyebrow}>Event builder</p>
             <h2>Create an event</h2>
+            <p>Give it a name, a place and a time. It goes live as soon as you hit create.</p>
+          </div>
+          <div className={styles.formFields}>
             <label>
               Name
-              <input name="name" value={form.name} onChange={updateField} required />
+              <input name="name" value={form.name} onChange={updateField} placeholder="Rooftop listening session" required />
+            </label>
+            <label>
+              Description
+              <textarea name="description" value={form.description} onChange={updateField} placeholder="What should people expect?" required />
             </label>
             <label>
               Location
-              <input name="location" value={form.location} onChange={updateField} required />
-            </label>
-            <label className={styles.wide}>
-              Description
-              <textarea name="description" value={form.description} onChange={updateField} required />
+              <input name="location" value={form.location} onChange={updateField} placeholder="Where is it?" required />
             </label>
             <div className={styles.formRow}>
               <label>
@@ -163,43 +159,48 @@ export default function EventsPage() {
               </label>
             </div>
             <button type="submit" className={styles.submitButton}>Create event</button>
-          </form>
-        )}
+          </div>
+        </form>
+      )}
 
-        {message && <p className={styles.message} role="alert">{message}</p>}
-        {loading ? (
-          <>
-            <p className={styles.loadingNote} role="status">Loading events…</p>
-            <div className={styles.grid} aria-hidden="true">
-              <div className={styles.skeleton} />
-              <div className={styles.skeleton} />
-              <div className={styles.skeleton} />
-            </div>
-          </>
-        ) : filteredEvents.length > 0 ? (
-          <section className={styles.grid}>
-            {filteredEvents.map((event) => (
-              <Link
-                key={event.id}
-                href={`/events/${event.id}`}
-                className={styles.card}
-              >
-                <p className={styles.eventDate}>
-                  <time dateTime={event.date}>{formatDate(event.date)}</time>
-                  <span className={styles.eventTime}>{event.time.slice(0, 5)}</span>
-                </p>
-                <h2>{event.name}</h2>
-                <p className={styles.description}>{event.description}</p>
-                <p className={styles.location}>{event.location}</p>
-              </Link>
-            ))}
-          </section>
-        ) : (
-          <p className={styles.emptyState}>
-            {query ? "No events match your search." : "No events yet. Create the first one."}
+      {message && <p className={styles.message}>{message}</p>}
+      {loading ? (
+        <p className={styles.emptyState}>Loading events...</p>
+      ) : filteredEvents.length > 0 ? (
+        <>
+          <p className={styles.count}>
+            {filteredEvents.length} {filteredEvents.length === 1 ? "event" : "events"}
           </p>
-        )}
-      </div>
+          <section className={styles.grid}>
+            {filteredEvents.map((event) => {
+              const when = dateParts(event.date);
+
+              return (
+                <Link
+                  key={event.id}
+                  href={`/events/${event.id}`}
+                  className={styles.card}
+                >
+                  <div className={styles.cardTop}>
+                    <div className={styles.dateBlock}>
+                      <span>{when.month}</span>
+                      <strong>{when.day}</strong>
+                    </div>
+                    <p className={styles.eventDate}>{when.weekday} · {event.time.slice(0, 5)}</p>
+                  </div>
+                  <h2>{event.name}</h2>
+                  <p className={styles.description}>{event.description}</p>
+                  <p className={styles.location}>{event.location}</p>
+                </Link>
+              );
+            })}
+          </section>
+        </>
+      ) : (
+        <p className={styles.emptyState}>
+          {query ? "No events match your search." : "No events yet. Create the first one."}
+        </p>
+      )}
     </main>
   );
 }

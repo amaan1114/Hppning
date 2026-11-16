@@ -5,15 +5,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getMe } from "../../../lib/api/auth";
 import { getEvent } from "../../../lib/api/events";
+import { dateParts } from "../../../lib/date";
 import styles from "../events.module.css";
-
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-// display only: "2026-11-21" -> "21 Nov 2026". Split, never new Date(), so no timezone can move the day.
-function formatDate(iso) {
-  const [year, month, day] = String(iso).slice(0, 10).split("-").map(Number);
-  return MONTHS[month - 1] && day && year ? `${day} ${MONTHS[month - 1]} ${year}` : iso;
-}
 
 export default function EventDetailsPage() {
   const { id } = useParams();
@@ -53,45 +46,43 @@ export default function EventDetailsPage() {
     };
   }, [id, router]);
 
+  const when = event ? dateParts(event.date) : null;
+
   return (
-    <main className={`${styles.page} ${styles.pageTinted}`}>
+    <main className={styles.page}>
       <nav className={styles.nav}>
-        <div className={styles.navInner}>
-          <Link href="/events" className={styles.logo}>happning</Link>
-          <Link href="/events" className={styles.backLink}>All events</Link>
-        </div>
+        <Link href="/events" className={styles.logo}>happning</Link>
+        <Link href="/events" className={styles.backLink}>All events</Link>
       </nav>
 
-      <div className={styles.body}>
-        {loading ? (
-          <>
-            <p className={styles.loadingNote} role="status">Loading event…</p>
-            <div className={`${styles.skeleton} ${styles.detailSkeleton}`} aria-hidden="true" />
-          </>
-        ) : event ? (
-          <article className={styles.detail}>
-            <div className={styles.detailMain}>
-              <h1>{event.name}</h1>
-              <p className={styles.detailDescription}>{event.description}</p>
+      {loading ? (
+        <p className={styles.emptyState}>Loading event...</p>
+      ) : event ? (
+        <article className={styles.detail}>
+          <div>
+            <p className={styles.eyebrow}>Event details</p>
+            <h1>{event.name}</h1>
+            <p className={styles.detailDescription}>{event.description}</p>
+          </div>
+          <aside className={styles.detailMeta}>
+            <div className={styles.detailDate}>
+              <span>{when.month}</span>
+              <strong>{when.day}</strong>
             </div>
-            <div className={styles.detailMeta}>
-              <div>
-                <span className={styles.metaLabel}>When</span>
-                <p className={`${styles.metaValue} ${styles.metaValueLead}`}>
-                  <time dateTime={event.date}>{formatDate(event.date)}</time>
-                </p>
-                <p className={styles.metaSub}>{event.time.slice(0, 5)}</p>
-              </div>
-              <div>
-                <span className={styles.metaLabel}>Where</span>
-                <p className={styles.metaValue}>{event.location}</p>
-              </div>
+            <div>
+              <span className={styles.metaLabel}>When</span>
+              <p>{when.full}</p>
+              <p className={styles.metaSub}>{event.time.slice(0, 5)}</p>
             </div>
-          </article>
-        ) : (
-          <p className={styles.message} role="alert">{message}</p>
-        )}
-      </div>
+            <div>
+              <span className={styles.metaLabel}>Where</span>
+              <p>{event.location}</p>
+            </div>
+          </aside>
+        </article>
+      ) : (
+        <p className={styles.message}>{message}</p>
+      )}
     </main>
   );
 }

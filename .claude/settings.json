@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(shasum *)",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "Bash(xcrun simctl list *)",
+      "Bash(xcrun simctl list)",
+      "Bash(plutil -p *)",
+      "Bash(mdfind *)",
+      "Bash(xcode-select -p)",
+      "Bash(xcodebuild -list *)",
+      "Bash(xcodebuild -list)",
+      "Bash(swift --version)",
+      "mcp__claude-in-chrome__list_connected_browsers",
+      "mcp__claude-in-chrome__find",
+      "Bash(xcrun devicectl list *)",
+      "Bash(defaults read *)",
+      "Bash(security find-identity *)",
+      "Bash(plutil -lint *)",
+      "Bash(codesign --verify *)"
+    ]
+  }
+}
