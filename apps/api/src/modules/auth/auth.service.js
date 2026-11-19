@@ -70,14 +70,20 @@ export const signUpService = async (name, email, password) => {
   return { verificationToken };
 };
 
-export const getMeService = (user) => {
+export const getMeService = async (user) => {
   if (!user?.id || !user?.email) {
     throw new httpError(401, "Invalid authenticated user");
   }
 
+  const dbUser = await getUserById(user.id);
+  if (!dbUser) {
+    throw new httpError(401, "User not found");
+  }
+
   return {
-    id: user.id,
-    email: user.email,
+    id: dbUser.id,
+    name: dbUser.name,
+    email: dbUser.email,
   };
 };
 
