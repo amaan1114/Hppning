@@ -97,6 +97,7 @@ export default function EventsPage() {
       <nav className={styles.nav}>
         <Link href="/events" className={styles.logo}>happning</Link>
         <div className={styles.navActions}>
+          <Link href="/registrations" className={styles.backLink}>My registrations</Link>
           <button type="button" className={styles.signOutButton} onClick={handleSignOut} disabled={signingOut}>
             {signingOut ? "Signing out..." : "Sign out"}
           </button>
