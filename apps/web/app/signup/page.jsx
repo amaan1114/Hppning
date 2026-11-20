@@ -34,19 +34,19 @@ export default function SignUpPage() {
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>
             Name
-            <input name="name" required />
+            <input name="name" autoComplete="name" required />
           </label>
           <label>
             Email
-            <input name="email" type="email" required />
+            <input name="email" type="email" autoComplete="email" required />
           </label>
           <label>
             Password
-            <input name="password" type="password" minLength={8} required />
+            <input name="password" type="password" autoComplete="new-password" minLength={8} required />
           </label>
           <button type="submit">Create account</button>
         </form>
-        {message && <p className={styles.message}>{message}</p>}
+        {message && <p className={styles.message} role="status">{message}</p>}
         <p className={styles.footer}>
           Already have an account? <Link href="/signin">Sign in</Link>
         </p>

@@ -45,7 +45,8 @@ export default function VerifyEmailPage() {
     <main className={styles.page}>
       <section className={styles.card}>
         <Link href="/" className={styles.logo}>happning</Link>
-        <h1>
+        <span className={styles.status} data-status={status} aria-hidden="true" />
+        <h1 aria-live="polite">
           {status === "verifying"
             ? "Verifying your email"
             : status === "success"

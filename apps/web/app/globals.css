@@ -1,9 +1,15 @@
 :root {
-  --ink: #1d2925;
-  --muted: #64716c;
-  --cream: #f7f5ef;
-  --green: #245c4a;
-  --line: #dce3dd;
+  color-scheme: dark;
+  --bg: #0b0b0d;
+  --surface: #141417;
+  --surface-2: #1c1c21;
+  --line: #2a2a31;
+  --ink: #f5f2ea;
+  --muted: #9c9aa5;
+  --accent: #c6ff3d;
+  --accent-ink: #10130a;
+  --danger: #ff8a75;
+  --radius: 18px;
 }
 
 * {
@@ -13,12 +19,33 @@
 }
 
 body {
-  background: var(--cream);
+  /* Defined here, not on :root, because next/font sets the Geist variables on <body>. */
+  --sans: var(--font-geist-sans), system-ui, sans-serif;
+  --mono: var(--font-geist-mono), ui-monospace, monospace;
+  background: var(--bg);
   color: var(--ink);
-  font-family: Arial, sans-serif;
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }

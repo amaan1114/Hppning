@@ -32,15 +32,15 @@ export default function SignInPage() {
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>
             Email
-            <input name="email" type="email" required />
+            <input name="email" type="email" autoComplete="email" required />
           </label>
           <label>
             Password
-            <input name="password" type="password" required />
+            <input name="password" type="password" autoComplete="current-password" required />
           </label>
           <button type="submit">Sign in</button>
         </form>
-        {message && <p className={styles.message}>{message}</p>}
+        {message && <p className={styles.messageError} role="alert">{message}</p>}
         <p className={styles.footer}>
           New here? <Link href="/signup">Create an account</Link>
         </p>

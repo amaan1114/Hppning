@@ -1,8 +1,11 @@
 .page {
   margin: 0 auto;
   max-width: 1180px;
-  padding: 28px 32px 80px;
+  overflow-x: clip;
+  padding: 24px 32px 40px;
 }
+
+/* ---------- nav ---------- */
 
 .nav {
   align-items: center;
@@ -11,111 +14,379 @@
 }
 
 .logo {
-  color: var(--green);
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -1px;
+  align-items: baseline;
+  display: inline-flex;
+  font-size: 22px;
+  font-weight: 700;
+  gap: 5px;
+  letter-spacing: -0.04em;
+}
+
+.logo::after {
+  background: var(--accent);
+  border-radius: 50%;
+  content: "";
+  height: 8px;
+  width: 8px;
 }
 
 .navLinks {
   align-items: center;
   display: flex;
-  gap: 24px;
+  gap: 8px;
+}
+
+.navLink {
+  color: var(--muted);
+  font-size: 15px;
+  padding: 10px 14px;
+  transition: color 150ms ease;
+}
+
+.navLink:hover {
+  color: var(--ink);
 }
 
 .navButton,
-.primaryButton {
-  background: var(--green);
-  border-radius: 6px;
-  color: white;
-  padding: 12px 18px;
+.primaryButton,
+.ghostButton,
+.ctaButton {
+  border-radius: 999px;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 20px;
+  transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
 }
 
+.navButton {
+  border: 1px solid var(--line);
+}
+
+.navButton:hover,
+.ghostButton:hover {
+  border-color: var(--ink);
+}
+
+.primaryButton {
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 16px;
+  padding: 16px 28px;
+}
+
+.ghostButton {
+  border: 1px solid var(--line);
+  font-size: 16px;
+  padding: 15px 24px;
+}
+
+.primaryButton:hover,
+.ctaButton:hover {
+  transform: translateY(-2px);
+}
+
+/* ---------- hero ---------- */
+
 .hero {
-  max-width: 680px;
-  padding: 150px 0 170px;
+  align-items: center;
+  display: grid;
+  gap: 48px;
+  grid-template-columns: 1.25fr 1fr;
+  padding: 110px 0 120px;
+  position: relative;
+}
+
+/* Ripple rings: the "something is happening over there" motif. */
+.hero::before {
+  background: repeating-radial-gradient(
+    circle at center,
+    transparent 0 46px,
+    rgba(198, 255, 61, 0.13) 46px 47px
+  );
+  content: "";
+  height: 900px;
+  mask-image: radial-gradient(circle, #000 0%, transparent 68%);
+  pointer-events: none;
+  position: absolute;
+  right: -260px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 900px;
+  z-index: -1;
 }
 
 .eyebrow {
-  color: var(--green);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .hero h1 {
-  font-size: clamp(48px, 8vw, 88px);
-  letter-spacing: -5px;
-  line-height: .95;
-  margin: 18px 0 24px;
+  font-size: clamp(46px, 7.2vw, 92px);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.94;
+  margin: 20px 0 26px;
+  text-wrap: balance;
+}
+
+.hero h1 em {
+  color: var(--accent);
+  font-style: normal;
 }
 
 .heroText {
   color: var(--muted);
   font-size: 19px;
   line-height: 1.6;
-  margin-bottom: 32px;
-  max-width: 470px;
+  margin-bottom: 36px;
+  max-width: 440px;
 }
 
-.events {
-  border-top: 1px solid var(--line);
-  padding-top: 48px;
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ---------- sample tickets ---------- */
+
+.tickets {
+  display: grid;
+  gap: 14px;
+  justify-self: end;
+  width: min(100%, 380px);
+}
+
+.ticket {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  display: flex;
+  gap: 16px;
+  padding: 14px;
+  transition: transform 250ms ease;
+}
+
+.ticket:nth-child(1) { transform: rotate(-3deg) translateX(-18px); }
+.ticket:nth-child(2) { transform: rotate(2deg) translateX(10px); }
+.ticket:nth-child(3) { transform: rotate(-1.5deg) translateX(-6px); }
+
+.tickets:hover .ticket {
+  transform: none;
+}
+
+.ticketDate {
+  background: var(--surface-2);
+  border-radius: 12px;
+  display: grid;
+  flex: none;
+  justify-items: center;
+  padding: 10px 0;
+  width: 62px;
+}
+
+.ticket:nth-child(2) .ticketDate {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.ticketDate span {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  opacity: 0.75;
+  text-transform: uppercase;
+}
+
+.ticketDate strong {
+  font-size: 26px;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.ticket h3 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.ticket p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* ---------- marquee ---------- */
+
+.marquee {
+  border-block: 1px solid var(--line);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  overflow: hidden;
+  padding: 22px 0;
+}
+
+.marqueeTrack {
+  animation: slide 36s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+.marqueeTrack span {
+  align-items: center;
+  display: inline-flex;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.marqueeTrack span::after {
+  background: var(--accent);
+  border-radius: 50%;
+  content: "";
+  height: 8px;
+  margin: 0 28px;
+  width: 8px;
+}
+
+@keyframes slide {
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- steps ---------- */
+
+.steps {
+  padding: 110px 0 40px;
 }
 
 .sectionHeading h2 {
-  font-size: 38px;
-  letter-spacing: -1.5px;
-  margin-top: 10px;
+  font-size: clamp(32px, 4.4vw, 52px);
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  margin-top: 14px;
+  max-width: 560px;
 }
 
-.eventGrid {
+.stepGrid {
   display: grid;
-  gap: 18px;
+  gap: 16px;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 32px;
+  list-style: none;
+  margin-top: 44px;
 }
 
-.eventCard {
-  background: white;
+.step {
+  background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 24px;
+  border-radius: var(--radius);
+  padding: 28px;
+  transition: border-color 200ms ease, transform 200ms ease;
 }
 
-.eventCard h3 {
-  font-size: 23px;
-  margin: 18px 0 10px;
+.step:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
 }
 
-.eventCard p {
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.eventCard span {
-  display: block;
-  font-size: 14px;
-  margin-top: 20px;
-}
-
-.eventDate {
-  color: var(--green) !important;
+.stepNumber {
+  color: var(--accent);
+  font-family: var(--mono);
   font-size: 13px;
-  font-weight: 700;
 }
 
-.emptyState {
+.step h3 {
+  font-size: 26px;
+  letter-spacing: -0.03em;
+  margin: 56px 0 10px;
+}
+
+.step p {
   color: var(--muted);
-  margin-top: 32px;
+  line-height: 1.55;
 }
 
-@media (max-width: 700px) {
-  .page { padding: 24px 20px 60px; }
-  .navLinks { gap: 12px; }
-  .navButton { padding: 10px 12px; }
-  .hero { padding: 110px 0 120px; }
-  .hero h1 { letter-spacing: -3px; }
-  .eventGrid { grid-template-columns: 1fr; }
+/* ---------- closing call to action ---------- */
+
+.cta {
+  background:
+    repeating-radial-gradient(
+      circle at 100% 0%,
+      transparent 0 40px,
+      rgba(16, 19, 10, 0.1) 40px 41px
+    ),
+    var(--accent);
+  border-radius: 28px;
+  color: var(--accent-ink);
+  margin-top: 60px;
+  padding: 72px 56px;
+}
+
+.cta h2 {
+  font-size: clamp(34px, 5.4vw, 68px);
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+  max-width: 640px;
+}
+
+.cta p {
+  font-size: 18px;
+  margin: 18px 0 32px;
+  opacity: 0.75;
+}
+
+.ctaButton {
+  background: var(--accent-ink);
+  color: var(--ink);
+  font-size: 16px;
+  padding: 16px 28px;
+}
+
+.footer {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: 14px;
+  justify-content: space-between;
+  padding-top: 40px;
+}
+
+.footer .logo {
+  color: var(--ink);
+  font-size: 18px;
+}
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 80px 0 90px;
+  }
+
+  .tickets {
+    justify-self: start;
+    margin-left: 18px;
+  }
+
+  .stepGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .step h3 {
+    margin-top: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page { padding: 20px 16px 32px; }
+  .navLink { padding: 10px 8px; }
+  .navButton { padding: 10px 14px; }
+  .hero { padding: 64px 0 72px; }
+  .steps { padding-top: 72px; }
+  .cta { border-radius: 22px; padding: 48px 24px; }
+  .footer { flex-direction: column; gap: 8px; }
 }
